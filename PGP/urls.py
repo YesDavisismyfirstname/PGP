@@ -18,6 +18,6 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    url(r'^gamelobby/', include('apps.gamelobby.urls', namespace='gamelobby')),
-    url(r'^', include('apps.login.urls', namespace='login')),
+    url(r'^gamelobby/', include(('apps.gamelobby.urls','gamelobby'), namespace='gamelobby')),
+    url(r'^', include(('apps.login.urls','login'), namespace='login')),
 ]

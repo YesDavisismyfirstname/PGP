@@ -25,7 +25,7 @@ SECRET_KEY = '==uw)dg#8y0s257(j50r5-j@h!!61+6m1f_u8=aqx@bgfmgtp2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['54.202.182.67']
 
 
 # Application definition
@@ -121,12 +121,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('localhost', 6379)],
+            'hosts': [('54.202.182.67', 6379)],
         },
         'ROUTING': 'PGP.routing.channel_routing',
     }
