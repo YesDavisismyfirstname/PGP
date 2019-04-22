@@ -34,3 +34,12 @@ sqlparse==0.3.0
 Twisted==19.2.0
 txaio==18.8.1
 zope.interface==4.6.0
+
+
+
+class GameManager(): 
+    def __init__(self):
+        players = []
+        level = {}
+        # group channel object for multiplayer
+        channel = {}
