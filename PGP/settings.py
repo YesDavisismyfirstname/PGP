@@ -25,7 +25,7 @@ SECRET_KEY = '==uw)dg#8y0s257(j50r5-j@h!!61+6m1f_u8=aqx@bgfmgtp2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['54.202.182.67']
+ALLOWED_HOSTS = ['54.190.156.10']
 
 
 # Application definition
@@ -127,7 +127,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('54.202.182.67', 6379)],
+            'hosts': [('127.0.0.1', 6379)],
         },
         'ROUTING': 'PGP.routing.channel_routing',
     }
