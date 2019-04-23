@@ -2,17 +2,12 @@
 {% load staticfiles%}
 {% block content %}
 <div id="gameselect" class="row justify-content-center ">
-    <div class="col-4 text-center">
-        <div class="gameMode" disabled>
+    <div class="col-12 text-center">
+        <div class="" disabled>
             <h2 class="pokefont-out">Rooms</h2>
             What room would you like to enter?<br/>
     <input id="room-name-input" type="text" size="100"/><br/>
     <input id="room-name-submit" type="button" value="Enter"/>
-        </div>
-    </div>
-    <div class="col-8 text-center">
-        <div class="gameMode">
-            <h2 class="pokefont-out">Multi-Player</h2>
         </div>
     </div>
 </div>
@@ -31,4 +26,4 @@
             window.location.pathname = '/chat/' + roomName + '/';
         };
     </script>
-{% endblock script}
+{% endblock script %}

@@ -1,0 +1,39 @@
+{% extends 'gamelobby/_game.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="row m-3">
+    <div class="col-12">
+        <a class="btn btn-light pokefont-out2" href="/gamelobby/pvp/new">Start new game</a>
+    </div>
+    <div class="col-3 m-1 border">
+
+        <Table>
+            <thead>
+                <tr>
+                    <th>
+                        <h2 class="pokefont-classic">Open Games</h2>
+                    </th>
+                </tr>
+            </thead>
+            {% for x in rooms %}
+            <tr>
+                <td class="pokefont-classic"><a href="/gamelobby/pvp/{{ x.id }}">{{ x.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </Table>
+
+    </div>
+    <div class="col-8 m-1 border">
+
+        <ul class="rooms">
+            {% for room in rooms %}
+            <li class="room-link pokefont-classic" data-room-id="{{ room.id }}">{{ room.name }}</li>
+            {% endfor %}
+        </ul>
+
+        <div id="chats">
+        </div>
+
+    </div>
+</div>
+{% endblock content %}
