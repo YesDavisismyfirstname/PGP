@@ -1,12 +1,12 @@
-from channels.routing import route, ProtocolTypeRouter
-from apps.login.consumers import ws_message, ws_add, ws_disconnect, ws_connect
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+import chat.routing
 
 application = ProtocolTypeRouter({
     # (http->django views is added by default)
+    'websocket': AuthMiddlewareStack(
+        URLRouter(
+            chat.routing.websocket_urlpatterns
+        )
+    ),
 })
-
-channel_routing = [
-    route("websocket.connect", ws_connect, path=r"^/(?P<room_name>[a-zA-Z0-9_]+)/$"),
-    route("websocket.receive", ws_message, path=r"^/(?P<room_name>[a-zA-Z0-9_]+)/$"),
-    route("websocket.disconnect", ws_disconnect, path=r"^/(?P<room_name>[a-zA-Z0-9_]+)/$"),
-]

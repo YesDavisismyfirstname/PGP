@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'channels',
     'apps.login',
     'apps.gamelobby',
+    'apps.game_window',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

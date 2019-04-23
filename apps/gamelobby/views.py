@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.shortcuts import render, redirect
+from apps.game_window.models import Lobbies
 import json
 
 User = get_user_model()
@@ -19,11 +20,29 @@ def index(request):
 
 @login_required(login_url='/log_in/')
 def pvp(request):
-    return render(request, 'gamelobby/pvp.html')
+    ctx = {
+        'rooms' : Lobbies.objects.order_by('name')
+        }
+    return render(request, 'gamelobby/index.html', ctx)
 
 @login_required(login_url='/log_in/')
-def pvpnew(request):
-    return render(request, 'gamelobby/pvp.html')
+def pvpNew(request):
+    if request.method=="POST":
+        newlob = newLobby(request.POST)
+        if newlob.is_valid():
+            newlob.save()
+            return redirect('/gamelobby/pvp')
+        else: 
+            ctx = {
+                'lobby' : newlob
+            }
+            return render(request, 'gamelobby/pvpnew.html',ctx)
+    else:
+        lobby = newLobby()
+        ctx = {
+            'lobby' : lobby
+            }
+        return render(request, 'gamelobby/pvpnew.html', ctx)
 
 def activegame(request, room_name):
     return render(request, 'gamelobby/activegame.html', {
