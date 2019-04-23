@@ -206,3 +206,31 @@ body {
 #carosel {
     height: 300px;
 }
+
+.pvpchat {
+    background-color: rgb(27, 27, 27);
+    color: green;
+    border: 1px solid lightgrey;
+    font-size: 8px;
+    width: 60%;
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
