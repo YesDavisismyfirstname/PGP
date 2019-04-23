@@ -1,6 +1,8 @@
 from django.db import models
 
-
+    
+    
+    
     
 class Pokemon(models.Model):
     name=models.CharField(max_length=45)
@@ -8,11 +10,9 @@ class Pokemon(models.Model):
     height = models.IntegerField()
     width = models.IntegerField()
     # animation = animation for pokemon
-    # sound = sound for pokemon
-    
-    # enemy pokemon = manytomany with levels table
+    # sound = sound for pokemon    
     ability = models.ManyToManyField(Abilities, releated_name='pokemon')
-    # collection = manytomany with player
+   
     
 class Abilities(models.Model):
     name = models.CharField(max_length=45)
@@ -37,10 +37,13 @@ class Lobbies(models.Model):
     name = models.CharField(max_length=45)
     max_players= models.IntegerField()
     # ref to the map lvl
-    map = models.CharField(max_length=255, null=True)  
+    level = models.ForeignKey(Levels, related_name='lobby')
     
 class Levels():
-    pass
+    name = models.CharField(max_length=45)
+    map ={}
+    enemy = models.ManyToManyField(Pokemon, related_name=level)
+    
         
     
     
