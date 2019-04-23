@@ -25,7 +25,7 @@ SECRET_KEY = '==uw)dg#8y0s257(j50r5-j@h!!61+6m1f_u8=aqx@bgfmgtp2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['54.190.156.10']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'channels',
     'apps.login',
     'apps.gamelobby',
+    'apps.game_window',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -132,3 +133,6 @@ CHANNEL_LAYERS = {
         'ROUTING': 'PGP.routing.channel_routing',
     }
 }
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
