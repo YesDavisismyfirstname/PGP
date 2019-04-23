@@ -20,7 +20,7 @@ def user_list(request):
     return render(request, 'login/user_list.html', {'users': users})
 
 def landing(request):
-    return render(request, 'login/landing.html')
+    return redirect("/gamelobby/")
 
 def log_in(request):
     form = AuthenticationForm()
@@ -28,7 +28,7 @@ def log_in(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect(reverse('login:user_list'))
+            return redirect(reverse('login:landing'))
         else:
             print(form.errors)
     return render(request, 'login/login.html', {'form': form})

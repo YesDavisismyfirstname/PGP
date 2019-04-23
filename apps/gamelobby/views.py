@@ -10,3 +10,7 @@ User = get_user_model()
 @login_required(login_url='/log_in/')
 def gamelobby(request):
     return render(request, 'gamelobby/gamemode.html')
+
+@login_required(login_url='/log_in/')
+def index(request):
+    return render(request, 'gamelobby/gamelobby.html')
