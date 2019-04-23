@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'apps.game_window',
     'channels',
     'apps.login',
     'apps.gamelobby',
@@ -122,6 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
 
 # CHANNEL_LAYERS = {
 #     'default': {

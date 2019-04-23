@@ -18,7 +18,7 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
-    url(r'^', include('apps.game_window', namespace='game_window'))
+    url(r'^', include(('apps.game_window.urls', 'gamewindow'))),
     url(r'^gamelobby/', include(('apps.gamelobby.urls','gamelobby'), namespace='gamelobby')),
     url(r'^', include(('apps.login.urls','login'), namespace='login')),
     

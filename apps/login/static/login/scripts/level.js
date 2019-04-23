@@ -22,14 +22,7 @@ function init(){
 	);
 	meshFloor.rotation.x -= Math.PI / 2; // Rotate the floor 90 degrees
 	scene.add(meshFloor);
-
-	var objLoader = new THREE.OBJLoader();
-	objLoader.load("C:\Users\ROliv\OneDrive\Desktop\CodingDojo\poke\PGP\apps\game_window\static\game_window\images\bulbasaur\New folder\Bulbasaur.obj", function(mesh){
-		scene.add(mesh);
-		mesh.postion.set(0,0,5);
-		
-		})
-		
+	
 	camera.position.set(0, player.height, -5);
 	camera.lookAt(new THREE.Vector3(0,player.height,0));
 	
