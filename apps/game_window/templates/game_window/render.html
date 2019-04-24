@@ -98,12 +98,12 @@
 		}
 		if (keyboard[65]) { // A key
 			// Redirect motion by 90 degrees
-			user.position.x += Math.sin(user.rotation.y + Math.PI / 2) * player.speed;
-			user.position.z += -Math.cos(user.rotation.y + Math.PI / 2) * player.speed;
+			meshFloor.rotation.z -= player.turnSpeed;
+			user.rotation.z += -Math.cos(user.rotation.y + Math.PI / 2) * player.speed;
 		}
 		if (keyboard[68]) { // D key
-			user.position.x += Math.sin(user.rotation.y - Math.PI / 2) * player.speed;
-			user.position.z += -Math.cos(user.rotation.y - Math.PI / 2) * player.speed;
+			meshFloor.rotation.z += player.turnSpeed;
+			user.rotation.z += -Math.cos(user.rotation.y - Math.PI / 2) * player.speed;
 		}
 	
 		// Keyboard turn inputs
