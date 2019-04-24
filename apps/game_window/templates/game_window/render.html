@@ -1,4 +1,7 @@
-var scene, camera, renderer, mesh;
+{% extends 'game_window/game.html' %}
+{% load staticfiles %} 
+{%block script %}
+<script> var scene, camera, renderer, mesh;
 var meshFloor;
 var keyboard = {};
 var player = { height: 1.8, speed: 0.2, turnSpeed: Math.PI * 0.02 };
@@ -23,7 +26,7 @@ function init() {
 	scene.add(meshFloor);
 
 	var objLoader = new THREE.OBJLoader();
-	objLoader.load("/static/game_window/images/bulbasaur/New_folder/Bulbasaur.obj", function (mesh) {
+	objLoader.load("{% static 'game_window/images/bulbasaur/newfolder/Bulbasaur.obj' %}", function (mesh) {
 		scene.add(mesh);
 		mesh.postion.set(0, 0, 5);
 
@@ -86,3 +89,5 @@ window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 
 window.onload = init;
+</script>
+{% endblock script %}

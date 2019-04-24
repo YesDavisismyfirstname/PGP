@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.urls import reverse
 from django.shortcuts import render, redirect
+from apps.game_window.models import Player 
 
 User = get_user_model()
 
@@ -27,6 +28,9 @@ def log_in(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
+            logMeIn = form.get_user()
+            loginuser = Player.objects.get(user=logMeIn)
+            loginuser.logged_in = True
             login(request, form.get_user())
             return redirect("/gamelobby/")
         else:
@@ -35,6 +39,9 @@ def log_in(request):
 
 @login_required(login_url='/log_in/')
 def log_out(request):
+    loginuser = Player.objects.get(user=request.user)
+    loginuser.logged_in = False
+    loginuser.save()
     logout(request)
     return redirect(reverse('login:login'))
 
@@ -44,6 +51,10 @@ def sign_up(request):
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
             form.save()
+            createPlayer = Player.objects.create()
+            createPlayer.user = User.objects.last()
+            createPlayer.save()
+            print(createPlayer)
             return redirect(reverse('login:login'))
         else:
             print(form.errors)

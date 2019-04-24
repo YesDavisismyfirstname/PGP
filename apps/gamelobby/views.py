@@ -26,12 +26,15 @@ def pvp(request, room_name =""):
         else:
             print("NO")
             print(activeplayers.values)
-    
+    try:
+        active = Lobbies.objects.get(id=room_name)
+    except:
+        active = {}
     
     ctx = {
         'rooms' : Lobbies.objects.all(),
         'room_name_json': mark_safe(json.dumps(room_name)),
-        'activeroom': Lobbies.objects.get(id=room_name),
+        'activeroom': active,
         }
     return render(request, 'gamelobby/pvp.html', ctx)
 
@@ -40,7 +43,11 @@ def pvpNew(request):
     if request.method=="POST":
         newlob = newLobby(request.POST)
         if newlob.is_valid():
+            newlob.created_by = request.user
             newlob.save()
+            request.user.logged_in_user.lobby = Lobbies.objects.last()
+            request.user.logged_in_user.save()
+            print(request.user.logged_in_user.__dict__)
             return redirect('/gamelobby/pvp')
         else: 
             ctx = {
@@ -48,7 +55,7 @@ def pvpNew(request):
             }
             return render(request, 'gamelobby/pvpnew.html',ctx)
     else:
-        lobby = newLobby()
+        lobby = newLobby(initial={'created_by': request.user})
         ctx = {
             'lobby' : lobby
             }

@@ -7,30 +7,12 @@
 	<body style="text-align:center;">
 		<span style="position:absolute;top:0px;left:0px;"><input type="button" value="Toggle Wireframe" onclick="mesh.material.wireframe=!mesh.material.wireframe;meshFloor.material.wireframe=!meshFloor.material.wireframe;"/></span>
     
-        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <script type="text/javascript" src="{% static '/game_window/js/level.js' %}"></script>
-
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min.js"></script>
-		<script type="text/javascript" src="C:\Users\ROliv\OneDrive\Desktop\CodingDojo\poke\PGP\apps\game_window\static\game_window\js\level.js"></script>
-		<script type="text/javascript" src="C:\Users\ROliv\OneDrive\Desktop\CodingDojo\poke\PGP\apps\game_window\static\game_window\js\OBJLoader.js"></script>
-		
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min.js"></script>
+        <script type="text/javascript" src="{% static 'game_window/js/level.js' %}"></script>
+		<script type="text/javascript" src="{% static 'game_window/js/OBJLoader.js' %}"></script>
+      
+	{% block script %}
+	{% endblock script %}	
 	</body>
 </html>
