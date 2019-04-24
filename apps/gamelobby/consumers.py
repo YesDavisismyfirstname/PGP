@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+from apps.game_window.models import Lobbies
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -20,20 +21,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        try:
+            message = text_data_json['message']
+        except:
+            message = "NULL"
+        try:
+            UserJoined = text_data_json['UserJoined']
+        except:
+            UserJoined = "NULL"
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'UserJoined' : UserJoined,
             }
         )
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-
+        UserJoined = event['UserJoined']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'UserJoined' : UserJoined,
         }))

@@ -17,24 +17,14 @@ def gamelobby(request):
 
 @login_required(login_url='/log_in/')
 def pvp(request, room_name =""):
-    if room_name != "":
-        currentroom = Lobbies.objects.get(id=room_name)
-        print(currentroom.name)
-        activeplayers = currentroom.player.all()
-        if request.user in activeplayers.__dict__:
-            print("Yes")
-        else:
-            print("NO")
-            print(activeplayers.values)
     try:
-        active = Lobbies.objects.get(id=room_name)
+        currentroom = Lobbies.objects.get(id=room_name)
     except:
-        active = {}
-    
+        currentroom = ""
     ctx = {
         'rooms' : Lobbies.objects.all(),
+        'activeroom': currentroom,
         'room_name_json': mark_safe(json.dumps(room_name)),
-        'activeroom': active,
         }
     return render(request, 'gamelobby/pvp.html', ctx)
 
@@ -45,10 +35,9 @@ def pvpNew(request):
         if newlob.is_valid():
             newlob.created_by = request.user
             newlob.save()
-            request.user.logged_in_user.lobby = Lobbies.objects.last()
-            request.user.logged_in_user.save()
-            print(request.user.logged_in_user.__dict__)
-            return redirect('/gamelobby/pvp')
+            newest = Lobbies.objects.last()
+            newest.player.add(request.user.logged_in_user)
+            return redirect('/gamelobby/pending/'+str(newest.id))
         else: 
             ctx = {
                 'lobby' : newlob
@@ -61,8 +50,38 @@ def pvpNew(request):
             }
         return render(request, 'gamelobby/pvpnew.html', ctx)
 
-def gamestart(request):
-    return
+@login_required
+def joingame(request,room_name):
+    print("HERE")
+    currentroom = Lobbies.objects.get(id=room_name)
+    print(currentroom)
+    currentroom.player.add(request.user.logged_in_user)
+    return redirect('/gamelobby/pending/' + str(room_name))
+
+@login_required
+def activegame(request,room_name):
+    currentroom = Lobbies.objects.get(id=room_name)
+    ctx = {
+        'activeroom': currentroom,
+        'room_name_json': mark_safe(json.dumps(room_name)),
+        }
+    return render(request, 'gamelobby/activegame.html', ctx)
+
+@login_required
+def delRoom(request,room_name):
+    #if request.method == "POST":
+        currentroom = Lobbies.objects.get(id=room_name)
+        currentroom.delete()
+        return redirect('/gamelobby/pvp')
+    #else:
+    #    return redirect('/gamelobby/pvp')
+@login_required(login_url='/log_in/')
+def gamestart(request,lobbyid):
+    if request.method=="POST":
+        lobby = Lobbies.objects.get(id=lobbyid)
+        players = lobby.players.all()
+        print(players)
+    return redirect("/gamelobby/pvp")
 # def activegame(request, room_name):
 #     return render(request, 'gamelobby/pvp.html', {
 #         'room_name_json': mark_safe(json.dumps(room_name)),

@@ -24,17 +24,19 @@
 
     </div>
     <div class="col-8 m-1 border">
-        <h3 class="pokefont-out">{{ activeroom.name }}</h3>
-        <div id="chats">
-            <textarea class="pokefont-classic pvpchat" id="chat-log" cols="100" rows="10"></textarea><br />
-            <input class="pokefont-classic pvpchat" id="chat-message-input" type="text" size="100" /><br />
-            <input class="pokebtn pokefont-classic" id="chat-message-submit" type="button" value="Post" />
+        <h3 class="pokefont-out2 col-4 d-inline">Game Preview</h3>
+        <div class="row">
+            <h3 class="col-12"> Active Players</h3>
+            <div class="col-5 m-3 d-inline">{% for x in activeroom.player.all %}
+                <p class="pokefont-classic">{{ x.user }}</p>
+                {% endfor %}
+            </div>
+            {% if request.user not in activeroom.player.all %}
+            <button id="launch_game" type="button" class="pokebtn pokefont-out2 col-4"><a
+                    href="/gamelobby/pvp/join/{{ activeroom.id }}">Join Game</a></button>
+            {% endif %}
         </div>
-        <h3> Active Players</h3>
-        {{ Lobbies.player.all }}
-        {% if x in Lobbies.player.all %}
-        <button id="launch_game" type="button" class="pokebtn pokefont-out2">START GAME</button>
-        {% endif %}
+
     </div>
 </div>
 {% endblock content %}

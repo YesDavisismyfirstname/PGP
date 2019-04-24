@@ -31,6 +31,7 @@ def log_in(request):
             logMeIn = form.get_user()
             loginuser = Player.objects.get(user=logMeIn)
             loginuser.logged_in = True
+            loginuser.save()
             login(request, form.get_user())
             return redirect("/gamelobby/")
         else:

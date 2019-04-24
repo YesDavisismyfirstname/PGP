@@ -26,9 +26,9 @@ class Levels(models.Model):
 class Lobbies(models.Model):
     name = models.CharField(max_length=45)
     max_players= models.IntegerField()
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='creator')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='createdLobby', null=True)
     # ref to the map lvl
-    level = models.ForeignKey(Levels, related_name='lobby', null=True, on_delete=models.PROTECT) 
+    level = models.ForeignKey(Levels, related_name='lobby', null=True, on_delete=models.SET_NULL) 
     
 class Poke_Rider(Pokemon):
     start_pos = models.IntegerField()
@@ -37,10 +37,10 @@ class Poke_Rider(Pokemon):
 class Player(models.Model):
     level = models.IntegerField(null=True)
     collected = models.ManyToManyField(Pokemon, related_name='playerCollected')
-    lobby = models.ForeignKey(Lobbies, related_name='player',null=True, on_delete=models.PROTECT)
-    riding = models.ForeignKey(Poke_Rider, related_name='player',null=True, on_delete=models.PROTECT)
+    lobby = models.ForeignKey(Lobbies, related_name='player',null=True, on_delete=models.SET_NULL)
+    riding = models.ForeignKey(Poke_Rider, related_name='player',null=True, on_delete=models.SET_NULL)
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name='logged_in_user',on_delete=models.PROTECT, null=True)  
+        settings.AUTH_USER_MODEL, related_name='logged_in_user',on_delete=models.SET_NULL, null=True)  
     logged_in = models.BooleanField(default=False)
 
     
