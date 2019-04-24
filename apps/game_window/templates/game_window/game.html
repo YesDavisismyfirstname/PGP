@@ -8,9 +8,14 @@
 		<span style="position:absolute;top:0px;left:0px;"><input type="button" value="Toggle Wireframe" onclick="mesh.material.wireframe=!mesh.material.wireframe;meshFloor.material.wireframe=!meshFloor.material.wireframe;"/></span>
     
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min.js"></script>
+		<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/threejs/r89/three.min.js"></script> -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/103/three.min.js"></script>
+
+		<script src="http://threejs.org/examples/js/loaders/MTLLoader.js"></script>
+		<!-- <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script> -->
         <!-- <script type="text/javascript" src="{% static 'game_window/js/level.js' %}"></script> -->
 		<script type="text/javascript" src="{% static 'game_window/js/OBJLoader.js' %}"></script>
+		<!-- <script type="text/javascript" src="{% static 'game_window/js/MTLLoader.js' %}"></script> -->
       
 	{% block script %}
 	{% endblock script %}	

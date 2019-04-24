@@ -6,79 +6,112 @@
 	var keyboard = {};
 	var player = { height: 1.8, speed: 0.2, turnSpeed: Math.PI * 0.02 };
 	var USE_WIREFRAME = false;
-	
+	var player;
 	function init() {
+
+		
+
 		scene = new THREE.Scene();
-		camera = new THREE.PerspectiveCamera(90, 1280 / 720, 0.1, 1000);
+		camera = new THREE.PerspectiveCamera(90, 1280 / 720, .1, 1000);
 	
-		mesh = new THREE.Mesh(
-			new THREE.BoxGeometry(1, 1, 1),
-			new THREE.MeshBasicMaterial({ color: 0xff4444, wireframe: USE_WIREFRAME })
-		);
-		mesh.position.y += 1; // Move the mesh up 1 meter	
-		mesh.add(camera)	
-		scene.add(mesh);
+		
 	
 		meshFloor = new THREE.Mesh(
-			new THREE.PlaneGeometry(10, 10, 10, 10),
+			new THREE.PlaneGeometry(100, 100, 100, 100),
 			new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: USE_WIREFRAME })
 		);
 		meshFloor.rotation.x -= Math.PI / 2; // Rotate the floor 90 degrees
 		scene.add(meshFloor);	
+
+		
+
+		var light = new THREE.SpotLight( 0xF9FCFF);
+		light.position.set( 0, 1000, 0 );
+		scene.add( light );
+
+		var manager = new THREE.LoadingManager();
+		loadedMaterials = []
+		materialsToLoad = ['BR_Bulbasaur.mtl']
+		console.log(materialsToLoad[0])
+		console.log(materialsToLoad.length)
+		
+		
+		var loadedMaterials=[];	
+		var materials;
+
+		var mtlLoader = new THREE.MTLLoader(manager);
+		mtlLoader.setPath("{% static '/game_window/images/bulbasaur/' %}");
+		for (var i = 0; i < materialsToLoad.length; i++) {
+			mtlLoader.load(materialsToLoad[i], function(materials) {
+				materials.preload();				
+				loadedMaterials.push(materials);
+				console.log('got here')
+				
+			}); 
+		}
+		console.log('here now');
+		var objLoader = new THREE.OBJLoader();
+		objLoader.setPath("{% static '/game_window/images/bulbasaur/' %}");
+		console.log(loadedMaterials);
+		for (let i = 0; i < loadedMaterials.length; i++) {
+			console.log('rubber baby buggy bumpers');
+			console.log(x);
+		}
+		console.log(Object.keys(loadedMaterials))
+		objLoader.load("BR_Bulbasaur-Shiny01.obj", function (sprite) {
+			console.log('mats' + loadedMaterials);
+			objLoader.setMaterials(loadedMaterials);
+			user = sprite											
+			scene.add(sprite);	
+			sprite.rotation.x += Math.PI / 2;				
+			sprite.position.set(0, 0, 5);
+		});
+
 	
-		// var objLoader = new THREE.OBJLoader();
-		// objLoader.load("/static/game_window/images/bulbasaur/New_folder/Bulbasaur.obj", function (mesh) {
-		// 	scene.add(mesh);
-		// 	mesh.postion.set(0, 0, 5);
+		
+		
 	
-		// })
-	
-		var amb_light = new THREE.AmbientLight(0x404040)
-		scene.add(amb_light)
-	
-		camera.position.set(0, player.height, -5);
+		camera.position.set(0, player.height+2, -10);
 		camera.lookAt(new THREE.Vector3(0, player.height, 0));
 	
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize(1280, 720);
 		document.body.appendChild(renderer.domElement);
-	
-	
-	
+		console.log(scene.children)
+		
 		animate();
-	}
+	};
 	
 	function animate() {
 		requestAnimationFrame(animate);
 	
-		<!-- mesh.rotation.x += 0.01; -->
-		<!-- mesh.rotation.y += 0.02; -->
+		camera.lookAt(new THREE.Vector3(0, scene.children[3], 0));
 	
 		// Keyboard movement inputs
 		if (keyboard[87]) { // W key
-			mesh.position.x -= Math.sin(mesh.rotation.y) * player.speed;
-			mesh.position.z -= -Math.cos(mesh.rotation.y) * player.speed;
+			user.position.x -= Math.sin(user.rotation.y) * player.speed;			
+			user.position.z -= -Math.cos(user.rotation.y) * player.speed;
 		}
 		if (keyboard[83]) { // S key
-			mesh.position.x += Math.sin(mesh.rotation.y) * player.speed;
-			mesh.position.z += -Math.cos(mesh.rotation.y) * player.speed;
+			user.position.x += Math.sin(user.rotation.y) * player.speed;
+			user.position.z += -Math.cos(user.rotation.y) * player.speed;
 		}
 		if (keyboard[65]) { // A key
 			// Redirect motion by 90 degrees
-			mesh.position.x += Math.sin(mesh.rotation.y + Math.PI / 2) * player.speed;
-			mesh.position.z += -Math.cos(mesh.rotation.y + Math.PI / 2) * player.speed;
+			user.position.x += Math.sin(user.rotation.y + Math.PI / 2) * player.speed;
+			user.position.z += -Math.cos(user.rotation.y + Math.PI / 2) * player.speed;
 		}
 		if (keyboard[68]) { // D key
-			mesh.position.x += Math.sin(mesh.rotation.y - Math.PI / 2) * player.speed;
-			mesh.position.z += -Math.cos(mesh.rotation.y - Math.PI / 2) * player.speed;
+			user.position.x += Math.sin(user.rotation.y - Math.PI / 2) * player.speed;
+			user.position.z += -Math.cos(user.rotation.y - Math.PI / 2) * player.speed;
 		}
 	
 		// Keyboard turn inputs
 		if (keyboard[37]) { // left arrow key
-			camera.rotation.y -= player.turnSpeed;
+			meshFloor.rotation.z -= player.turnSpeed;
 		}
 		if (keyboard[39]) { // right arrow key
-			camera.rotation.y += player.turnSpeed;
+			meshFloor.rotation.z += player.turnSpeed;
 		}
 	
 		renderer.render(scene, camera);
