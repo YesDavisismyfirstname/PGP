@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'apps.game_window',
     'channels',
     'apps.login',
     'apps.gamelobby',

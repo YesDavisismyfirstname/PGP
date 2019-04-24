@@ -68,7 +68,7 @@ function createScene(){
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setSize( sceneWidth, sceneHeight );
     dom = document.getElementById('TutContainer');
-	dom.appendChild(renderer.domElement);
+	dom.prependChild(renderer.domElement);
 	//stats = new Stats();
 	//dom.appendChild(stats.dom);
 	createTreesPool();
