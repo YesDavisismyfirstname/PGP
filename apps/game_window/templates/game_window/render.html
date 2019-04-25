@@ -18,7 +18,7 @@
 	
 		meshFloor = new THREE.Mesh(
 			new THREE.PlaneGeometry(100, 100, 100, 100),
-			new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: USE_WIREFRAME })
+			new THREE.MeshBasicMaterial({ color: 0xFF004A, wireframe: USE_WIREFRAME })
 		);
 		meshFloor.rotation.x -= Math.PI / 2; // Rotate the floor 90 degrees
 		scene.add(meshFloor);	
@@ -50,41 +50,67 @@
 			}); 
 		}
 		console.log('here now');
-		var objLoader = new THREE.OBJLoader();
-		objLoader.setPath("{% static '/game_window/images/bulbasaur/' %}");
-		console.log(loadedMaterials);
-		for (let i = 0; i < loadedMaterials.length; i++) {
-			console.log('rubber baby buggy bumpers');
-			console.log(x);
-		}
-		console.log(Object.keys(loadedMaterials))
-		objLoader.load("BR_Bulbasaur-Shiny01.obj", function (sprite) {
-			console.log('mats' + loadedMaterials);
-			objLoader.setMaterials(loadedMaterials);
-			user = sprite											
-			scene.add(sprite);	
-			sprite.rotation.x += Math.PI / 2;				
-			sprite.position.set(0, 0, 5);
-		});
-
-	
-		
 		
 	
-		camera.position.set(0, player.height+2, -10);
+		spawnPlayer();
+		
+	
+		camera.position.set(0, player.height+5, -10);		
 		camera.lookAt(new THREE.Vector3(0, player.height, 0));
 	
 		renderer = new THREE.WebGLRenderer();
 		renderer.setSize(1280, 720);
 		document.body.appendChild(renderer.domElement);
-		console.log(scene.children)
+		console.log(scene.children);
 		
 		animate();
 	};
-	
+	// require id, pokemon_id, start_pos
+	function spawnPlayer(){
+
+		var manager = new THREE.LoadingManager();
+		loadedMaterials = []
+		materialsToLoad = ['BR_Bulbasaur.mtl']
+		console.log(materialsToLoad[0])
+		console.log(materialsToLoad.length)
+		
+		
+		var loadedMaterials=[];	
+		var materials;
+
+		var mtlLoader = new THREE.MTLLoader(manager);
+		mtlLoader.setPath("{% static '/game_window/images/bulbasaur/' %}");
+		for (var i = 0; i < materialsToLoad.length; i++) {
+			mtlLoader.load(materialsToLoad[i], function(materials) {
+				materials.preload();				
+				loadedMaterials.push(materials);
+				console.log('got here')
+				
+			}); 
+
+
+		var objLoader = new THREE.OBJLoader();
+			objLoader.setPath("{% static '/game_window/images/bulbasaur/' %}");
+			console.log(loadedMaterials);
+			for (let i = 0; i < loadedMaterials.length; i++) {
+				console.log('rubber baby buggy bumpers');
+				console.log(x);
+			}
+			console.log(Object.keys(loadedMaterials))
+			objLoader.load("BR_Bulbasaur-Shiny01.obj", function (sprite) {
+				console.log('mats' + loadedMaterials);
+				objLoader.setMaterials(loadedMaterials);
+				user = sprite											
+				scene.add(sprite);	
+				sprite.rotation.x += Math.PI / 2;	
+				//change to start_pos variable			
+				sprite.position.set(0, 0, 5);
+			});
+		}
+	}
 	function animate() {
 		requestAnimationFrame(animate);
-	
+		
 		camera.lookAt(new THREE.Vector3(0, scene.children[3], 0));
 	
 		// Keyboard movement inputs
@@ -99,19 +125,21 @@
 		if (keyboard[65]) { // A key
 			// Redirect motion by 90 degrees
 			meshFloor.rotation.z -= player.turnSpeed;
-			user.rotation.z += -Math.cos(user.rotation.y + Math.PI / 2) * player.speed;
+			user.position.z += -Math.cos(user.rotation.y + Math.PI / 2) * player.speed;
+			camera.rotation.z -= player.turnSpeed;
 		}
 		if (keyboard[68]) { // D key
 			meshFloor.rotation.z += player.turnSpeed;
-			user.rotation.z += -Math.cos(user.rotation.y - Math.PI / 2) * player.speed;
+			user.position.z += -Math.cos(user.rotation.y - Math.PI / 2) * player.speed;
+			camera.rotation.z += player.turnSpeed;
 		}
 	
 		// Keyboard turn inputs
 		if (keyboard[37]) { // left arrow key
-			meshFloor.rotation.z -= player.turnSpeed;
+			camera.rotation.y -= player.turnSpeed;
 		}
 		if (keyboard[39]) { // right arrow key
-			meshFloor.rotation.z += player.turnSpeed;
+			camera.rotation.y += player.turnSpeed;
 		}
 	
 		renderer.render(scene, camera);
@@ -124,6 +152,10 @@
 	function keyUp(event) {
 		keyboard[event.keyCode] = false;
 	}
+
+
+
+
 	
 	window.addEventListener('keydown', keyDown);
 	window.addEventListener('keyup', keyUp);
